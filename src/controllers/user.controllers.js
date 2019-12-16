@@ -188,21 +188,25 @@ async function regProfe(req, res) {
 }
 
 async function entregarProf(req, res) {
-  var { ci, observacion } = req.body;
+  var { ci, observacion, id_user } = req.body;
   var connection = mysql.createConnection(globalDB);
   connection.connect();
   if (ci) {
     if (observacion) {
-      const queryy = "CALL Actualizar_Observacion(?,?);";
-      await connection.query(queryy, [ci, observacion], (err, rows, fields) => {
-        if (!err) {
-          res.json(rows[0]);
-        } else {
-          res.status(200).send({
-            err
-          });
+      const queryy = "CALL Actualizar_Observacion(?,?,?);";
+      await connection.query(
+        queryy,
+        [ci, observacion, id_user],
+        (err, rows, fields) => {
+          if (!err) {
+            res.json(rows[0]);
+          } else {
+            res.status(200).send({
+              err
+            });
+          }
         }
-      });
+      );
     } else {
       res.status(200).send({
         messagge: "complete el campo observacion"
@@ -217,12 +221,12 @@ async function entregarProf(req, res) {
 }
 
 async function cerrarSesion(req, res) {
-  var { user } = req.body;
+  var { id_user } = req.body;
   var connection = mysql.createConnection(globalDB);
   connection.connect();
-  if (user) {
+  if (id_user) {
     const queryy = "CALL cerrar_inicio_sesion(?);";
-    await connection.query(queryy, [user], (err, rows, fields) => {
+    await connection.query(queryy, [id_user], (err, rows, fields) => {
       if (!err) {
         if (rows[0][0].exito === 0) {
           res.json({
