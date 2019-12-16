@@ -224,6 +224,8 @@ async function cerrarSesion(req, res) {
   var { idUser } = req.body;
   var connection = mysql.createConnection(globalDB);
   connection.connect();
+  console.log(idUser);
+
   if (idUser) {
     const queryy = "CALL cerrar_inicio_sesion(?);";
     await connection.query(queryy, [idUser], (err, rows, fields) => {
