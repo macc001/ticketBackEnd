@@ -221,12 +221,12 @@ async function entregarProf(req, res) {
 }
 
 async function cerrarSesion(req, res) {
-  var { id_user } = req.body;
+  var { idUser } = req.body;
   var connection = mysql.createConnection(globalDB);
   connection.connect();
-  if (id_user) {
+  if (idUser) {
     const queryy = "CALL cerrar_inicio_sesion(?);";
-    await connection.query(queryy, [id_user], (err, rows, fields) => {
+    await connection.query(queryy, [idUser], (err, rows, fields) => {
       if (!err) {
         if (rows[0][0].exito === 0) {
           res.json({
@@ -247,7 +247,7 @@ async function cerrarSesion(req, res) {
     });
   } else {
     res.status(200).send({
-      messagge: "complete el campo user"
+      messagge: "complete el campo idUser"
     });
   }
   connection.end();
