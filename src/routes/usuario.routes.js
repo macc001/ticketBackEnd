@@ -11,5 +11,6 @@ router.post("/mostrar", usuario.mostrar);
 // en proceso v2
 router.post("/registrar-profesor", usuario.regProfe);
 router.post("/entregar-profesor", usuario.entregarProf);
+router.post("/cerrar-sesion", usuario.cerrarSesion);
 
 module.exports = router;

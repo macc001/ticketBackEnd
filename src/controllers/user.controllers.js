@@ -216,11 +216,45 @@ async function entregarProf(req, res) {
   connection.end();
 }
 
+async function cerrarSesion(req, res) {
+  var { user } = req.body;
+  var connection = mysql.createConnection(globalDB);
+  connection.connect();
+  if (user) {
+    const queryy = "CALL cerrar_inicio_sesion(?);";
+    await connection.query(queryy, [user], (err, rows, fields) => {
+      if (!err) {
+        if (rows[0][0].exito === 0) {
+          res.json({
+            ok: false,
+            status: "error al cerrar sesion"
+          });
+        } else {
+          res.json({
+            ok: true,
+            status: rows[0]
+          });
+        }
+      } else {
+        res.status(200).send({
+          err
+        });
+      }
+    });
+  } else {
+    res.status(200).send({
+      messagge: "complete el campo user"
+    });
+  }
+  connection.end();
+}
+
 module.exports = {
   validar_ci,
   insert_ticket,
   login,
   mostrar,
   regProfe,
-  entregarProf
+  entregarProf,
+  cerrarSesion
 };
